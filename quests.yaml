@@ -1,0 +1,30 @@
+quests:
+  - id: quest1
+    displayName: My First Quest
+    description: Your first ever quest using Sidequestr!
+    tasks:
+      - id: quest1task1
+        displayName: Scan your first QR code
+        required: []
+        completed: true
+  - id: quest2
+    displayName: My Second Quest
+    description: Your second ever quest using Sidequestr!
+    tasks:
+      - id: quest2task1
+        displayName: Scan your second QR code
+        required: []
+  - id: quest3
+    displayName: My Third Quest
+    description: Your third ever quest using Sidequestr!
+    tasks:
+      - id: quest3task1
+        displayName: Scan your third QR code
+        required: []
+  - id: quest4
+    displayName: My Fourth Quest
+    description: Your fourth ever quest using Sidequestr!
+    tasks:
+      - id: quest4task1
+        displayName: Scan your fourth QR code
+        required: []
