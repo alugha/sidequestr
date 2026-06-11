@@ -1,7 +1,26 @@
 import Fastify from 'fastify'
+import closeWithGrace from 'close-with-grace'
+
+function getLoggerOptions() {
+  // Only if the program is running in an interactive terminal
+  if (process.stdout.isTTY) {
+    return {
+      level: 'info',
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          translateTime: 'HH:MM:ss Z',
+          ignore: 'pid,hostname'
+        }
+      }
+    }
+  }
+
+  return { level: process.env.LOG_LEVEL ?? 'silent' }
+}
 
 const app = Fastify({
-  logger: true,
+  logger: getLoggerOptions(),
   connectionTimeout: 120_000,
   requestTimeout: 60_000,
   keepAliveTimeout: 10_000,
@@ -15,6 +34,17 @@ const app = Fastify({
     }
   }
 })
+
+closeWithGrace(
+  { delay: 500 },
+  async ({ err }) => {
+    if (err != null) {
+      app.log.error(err)
+    }
+
+    await app.close()
+  }
+)
 
 await app.ready()
 
