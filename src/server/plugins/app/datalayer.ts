@@ -125,14 +125,14 @@ declare module 'fastify' {
   }
 }
 
-async function newDatalayer(): Promise<Datalayer> {
-  const database = new DatabaseSync(':memory:');
+async function newDatalayer(storePath?: string): Promise<Datalayer> {
+  const database = new DatabaseSync(storePath || ':memory:');
   return new Datalayer(database, quests);
 }
 
 export default fp(
   async function (fastify: FastifyInstance) {
-    const db = await newDatalayer();
+    const db = await newDatalayer(fastify.config.SQLITE_PATH);
     fastify.decorate('dl', db)
   },
   {
