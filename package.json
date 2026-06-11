@@ -18,7 +18,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev:server": "",
+    "dev:server": "tsx --watch ./src/server/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }
 }
