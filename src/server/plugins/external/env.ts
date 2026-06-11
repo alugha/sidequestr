@@ -8,6 +8,7 @@ declare module 'fastify' {
       COOKIE_NAME: string;
       COOKIE_SECURED: boolean;
       RATE_LIMIT_MAX: number;
+      SQLITE_PATH: string;
     };
   }
 }
@@ -40,6 +41,9 @@ const schema = {
       type: 'boolean',
       default: true
     },
+    SQLITE_PATH: {
+      type: 'string',
+    }
   }
 }
 
