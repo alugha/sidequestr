@@ -2,7 +2,7 @@ import {
   type FastifyPluginAsyncTypebox,
   Type
 } from '@fastify/type-provider-typebox'
-import { UserSchema } from '../../schemas/user.ts'
+import { UserSchema } from '../../../shared/schemas/user.ts'
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.get(

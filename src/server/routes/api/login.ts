@@ -3,8 +3,8 @@ import {
   type FastifyPluginAsyncTypebox,
   Type
 } from '@fastify/type-provider-typebox'
-import { LoginSchema } from '../../schemas/auth.ts'
-import { UserSchema } from '../../schemas/user.ts'
+import { LoginSchema } from '../../../shared/schemas/auth.ts'
+import { UserSchema } from '../../../shared/schemas/user.ts'
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.post(
