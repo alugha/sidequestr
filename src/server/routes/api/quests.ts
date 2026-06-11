@@ -15,8 +15,8 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         },
       }
     },
-    async function () {
-      return this.dl.getAllQuests();
+    async function (request) {
+      return this.dl.getAllQuests(request.session.user?.id);
     }
   )
 }

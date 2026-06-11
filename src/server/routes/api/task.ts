@@ -6,8 +6,8 @@ import {
 import { QuestSchema } from '../../../shared/schemas/quest';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
-  fastify.get(
-    '/quest/:id',
+  fastify.put(
+    '/task/:id',
     {
       schema: {
         params: Type.Object({
@@ -15,11 +15,16 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         }),
         response: {
           200: QuestSchema,
+          401: Type.String(),
         },
       }
     },
-    async function (request) {
-      return this.dl.getQuestById(request.params.id, request.session.user?.id)
+    async function (request, reply) {
+      if (!request.session.user) {
+        reply.status(401);
+        return "Unauthorized";
+      }
+      return this.dl.completeTask(request.params.id, request.session.user?.id)
     }
   )
 }
