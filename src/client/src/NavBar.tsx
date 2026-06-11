@@ -1,7 +1,7 @@
 import type React from "react";
 import {BottomNavigation, type BottomNavigationSelectEvent} from '@progress/kendo-react-layout'
 import { cameraIcon, homeIcon } from '@progress/kendo-svg-icons';
-import { useNavigate } from "react-router-dom";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 
 interface Props {
@@ -15,16 +15,15 @@ const navItems = [
 
 const NavBar: React.FC<Props> =({children})=> {
     const navigate = useNavigate();
-    const [selectedIdx, setSelectedIdx] = useState(0);
+    const location = useLocation();
 
     const onSelect = (ev: BottomNavigationSelectEvent) => {
         navigate(ev.itemTarget.route);
-        setSelectedIdx(ev.itemIndex);
     };
 
     const items = useMemo(() => 
-        navItems.map((i,idx)=>({...i, selected:idx===selectedIdx})),
-        [selectedIdx]
+        navItems.map(i=>({...i, selected:matchPath(i.route,location.pathname)!=null})),
+        [location]
     );
 
     return <>
