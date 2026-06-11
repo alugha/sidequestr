@@ -6,7 +6,6 @@ quests:
       - id: quest1task1
         displayName: Scan your first QR code
         required: []
-        completed: true
   - id: quest2
     displayName: My Second Quest
     description: Your second ever quest using Sidequestr!
@@ -14,7 +13,6 @@ quests:
       - id: quest2task1
         displayName: Scan your second QR code
         required: []
-        completed: true
       - id: quest2task2
         displayName: Scan your second QR code
         required: []
