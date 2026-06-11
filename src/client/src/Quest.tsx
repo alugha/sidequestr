@@ -1,68 +1,44 @@
-import type { ReactElement } from 'react';
-import './App.css';
+import "./App.css";
 
-import { Checkbox } from '@progress/kendo-react-inputs';
-import kendoReactLogo from './assets/ProgressKendoReact_logo.svg';
+import { Checkbox } from "@progress/kendo-react-inputs";
+import sampleImage from "./assets/icon.svg";
+import { useParams } from "react-router";
+import { useEffect, useState, type ReactElement } from "react";
 
-function App(): ReactElement {
+import { type Quest } from "../../shared/schemas/quest";
 
-    const eventName = "HAcHackathonParty"
-    const eventDescription = "Design and build a product that improves how events are created or experienced, from discovering better content and participants, to enabling more meaningful interactions at scale. Focus on solving a specific, real problem and show clear value to organisers or attendees. Use Kendo UI to bring your idea to life through a polished, interactive experience."
-  
-const tasks= [
-      {
-        "id": "quest1task1",
-        "displayName": "Scan your first QR code",
-        "required": [],
-        "completed": false
-      },
+function SingleQuestPage(): ReactElement {
+  const { questId } = useParams();
+  let [ quest, setQuest ] = useState<Quest>();
 
-           {
-        "id": "quest1task1",
-        "displayName": "Scan your second QR code",
-        "required": [],
-        "completed": false
-      },
-           {
-        "id": "quest1task1",
-        "displayName": "Scan your third QR code",
-        "required": [],
-        "completed": false
-      },
-           {
-        "id": "quest1task1",
-        "displayName": "Scan your fouth QR code",
-        "required": [],
-        "completed": false
-      },
-           {
-        "id": "quest1task1",
-        "displayName": "Scan your fith QR code",
-        "required": [],
-        "completed": false
-      }
-    ];
+  useEffect(() => {
+    fetch(`/api/quest/${questId}`).then(body => body.json()).then((q: Quest) => {
+      setQuest(q);
+    })
+  }, [questId])
 
-
-    return (
-    <div style={{margin:"1rem"}}>
-                <img src={kendoReactLogo} alt="KendoReact Logo" />
+  return (
+    <div style={{ margin: "1rem" }}>
+      <img src={sampleImage} alt="QuestImage" style={{maxHeight: 200}} />
       <div>
         <div className="example-wrapper">
           <div className="page">
-            <div className="content">
-        
-            </div>
+            <div className="content"></div>
           </div>
         </div>
       </div>
- <hr/>
- <h3>{eventName}</h3>
-<p>{eventDescription}</p>
+      <hr />
+      <h3>{quest?.displayName}</h3>
+      <p>{quest?.description}</p>
 
-{tasks.map(t =>  <p style={{display:'flex', gap: "1rem"}}><Checkbox defaultChecked={t.completed} size={'large'} /> {t.displayName}</p>  )}
-  </div>
+      {quest && quest.tasks.map((t) => (
+        <p style={{ display: "flex", gap: "1rem" }}>
+          <Checkbox defaultChecked={t.completed} disabled={true} size={"large"} />{" "}
+          {t.displayName}
+        </p>
+      ))}
+    </div>
   );
 }
 
-export default App;
+export default SingleQuestPage;

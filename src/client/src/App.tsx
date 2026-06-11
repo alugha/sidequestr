@@ -4,6 +4,7 @@ import './App.css';
 import NavBar from './NavBar';
 import AboutUs from './AboutUs';
 import Dashboard from './Dashboard';
+import Quest from './Quest';
 
 function App(): ReactElement {
   return (
@@ -12,7 +13,7 @@ function App(): ReactElement {
           <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/scan" element={<>Scanner</>} />
-              <Route path="/quest/:questId" element={<>Quest</>} />
+              <Route path="/quest/:questId" element={<Quest />} />
               <Route path="about" element={<AboutUs />} />
           </Routes>
       </NavBar>
