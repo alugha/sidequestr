@@ -25,7 +25,7 @@ const QuestList: React.FC<Props> = ({items}) => {
             </summary>
             <ul>
                 {l.quests.map(q=>
-                    <li>
+                    <li key={q.id}>
                         <Link to={generatePath("/quest/:questId",{questId:q.id})}>{q.displayName}</Link>
                     </li>
                 )}

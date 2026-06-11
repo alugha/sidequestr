@@ -32,10 +32,12 @@ function SingleQuestPage(): ReactElement {
       <p>{quest?.description}</p>
 
       {quest && quest.tasks.map((t) => (
-        <p style={{ display: "flex", gap: "1rem" }}>
-          <Checkbox defaultChecked={t.completed} disabled={true} size={"large"} />{" "}
-          {t.displayName}
-        </p>
+        <ul key={t.id}>
+          <li style={{ display: "flex", "gap": "1rem" }}>
+            <Checkbox defaultChecked={t.completed} disabled={true} size={"large"} />{" "}
+            {t.displayName}
+          </li>
+        </ul>
       ))}
     </div>
   );
