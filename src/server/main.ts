@@ -1,5 +1,7 @@
 import Fastify from 'fastify'
 import closeWithGrace from 'close-with-grace'
+import fp from 'fastify-plugin'
+import app from './app.ts';
 
 function getLoggerOptions() {
   // Only if the program is running in an interactive terminal
@@ -19,7 +21,7 @@ function getLoggerOptions() {
   return { level: process.env.LOG_LEVEL ?? 'silent' }
 }
 
-const app = Fastify({
+const f = Fastify({
   logger: getLoggerOptions(),
   connectionTimeout: 120_000,
   requestTimeout: 60_000,
@@ -35,22 +37,24 @@ const app = Fastify({
   }
 })
 
+f.register(fp(app))
+
 closeWithGrace(
   { delay: 500 },
   async ({ err }) => {
     if (err != null) {
-      app.log.error(err)
+      f.log.error(err)
     }
 
-    await app.close()
+    await f.close()
   }
 )
 
-await app.ready()
+await f.ready()
 
 try {
-  await app.listen({ host: "::", port: 3000 })
+  await f.listen({ host: "::", port: f.config.PORT })
 } catch (err) {
-  app.log.error(err)
+  f.log.error(err)
   process.exit(1)
 }
