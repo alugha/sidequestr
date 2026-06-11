@@ -2,11 +2,11 @@ import * as React from "react";
 import type { ReactElement } from "react";
 import "./App.css";
 
-import { TreeView } from "@progress/kendo-react-treeview";
 import { Avatar } from "@progress/kendo-react-layout";
 import { userIcon } from "@progress/kendo-svg-icons";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { GridLayout, GridLayoutItem } from "@progress/kendo-react-layout";
+import TreeView, { type QuestList } from "./QuestList";
 
 const userName = "Alugha";
 const userDescription = "I'm a company";
@@ -15,46 +15,31 @@ const eventName = "HAcHackathonParty";
 const eventDescription =
   "Design and build a product that improves how events are created or experienced, from discovering better content and participants, to enabling more meaningful interactions at scale. Focus on solving a specific, real problem and show clear value to organisers or attendees. Use Kendo UI to bring your idea to life through a polished, interactive experience.";
 
-interface TreeViewDataItem {
-  text: string;
-  expanded: boolean;
-  selected: boolean;
-  items: TreeViewDataItem[];
-}
 
-const questsData: TreeViewDataItem[] = [
+const questsData: QuestList[] = [
   {
     text: "Open",
-    expanded: false,
-    selected: false,
-    items: [],
+    quests: [],
   },
   {
     text: "Running",
-    expanded: false,
-    selected: false,
-    items: [],
+    quests: [],
   },
   {
     text: "Completed",
-    expanded: false,
-    selected: false,
-    items: [],
+    quests: [],
   },
 ];
 
 function Dashboard(): ReactElement {
-  const [data, setData] = React.useState<TreeViewDataItem[]>([]);
-  const onExpandChange = (event: any) => {
-    event.item.expanded = !event.item.expanded;
-    setData([...data]);
-  };
+  const [data, setData] = React.useState<QuestList[]>([]);
+
 
   React.useEffect(() => {
     fetch('/api/quests').then(body => body.json()).then(obj => {
-      questsData[0].items.length = 0
-      questsData[1].items.length = 0
-      questsData[2].items.length = 0
+      questsData[0].quests.length = 0
+      questsData[1].quests.length = 0
+      questsData[2].quests.length = 0
       obj.forEach((quest: any) => {
         const totalTasks = quest.tasks.length;
         let completedTasks = 0;
@@ -63,13 +48,13 @@ function Dashboard(): ReactElement {
         })
         if (completedTasks == totalTasks) {
           // Add to completed list
-          questsData[2].items.push({ text: `${quest.displayName} [${totalTasks}]`, items: [], expanded: false, selected: false })
+          questsData[2].quests.push({ displayName: `${quest.displayName} [${totalTasks}]`, id: quest.id })
         } else if (completedTasks > 0) {
           // Add to running list
-          questsData[1].items.push({ text: `${quest.displayName} [${completedTasks}/${totalTasks}]`,  items: [], expanded: false, selected: false })
+          questsData[1].quests.push({ displayName: `${quest.displayName} [${completedTasks}/${totalTasks}]`,  id: quest.id })
         } else {
           // Add to open list
-          questsData[0].items.push({ text: `${quest.displayName} [${totalTasks}]`,  items: [], expanded: false, selected: false })
+          questsData[0].quests.push({ displayName: `${quest.displayName} [${totalTasks}]`,  id: quest.id })
         }
       })
       setData(questsData)
@@ -117,9 +102,7 @@ function Dashboard(): ReactElement {
       <hr />
       <h3>Your quests</h3>
       <TreeView
-        data={data}
-        expandIcons={true}
-        onExpandChange={onExpandChange}
+        items={data}
       />
     </div>
   );
