@@ -1,6 +1,12 @@
 @import '@progress/kendo-theme-material/dist/all.css';
 @import '@progress/kendo-theme-utils/dist/all.css';
 
+:root {
+  --kendo-color-primary: oklch(62.79% 0.2171 261.72deg);
+  --kendo-color-secondary: oklch(0.3717 0.1258 6.14);
+  --kendo-color-tertiary: oklch(68.14% 0.1824 145.32deg);
+}
+
 html,
 body {
   margin: 0;
