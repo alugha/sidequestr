@@ -11,13 +11,15 @@ interface DL {
   createUser(user: User): void;
 
   /* Quest */
-  getAllQuests(): Quest[];
-  getQuestById(id: string): Quest | undefined;
+  getAllQuests(userId?: string): Quest[];
+  getQuestById(id: string, userId?: string): Quest | undefined;
   createQuest(quest: Quest): void;
 
   /* Quest Task */
   createTask(questId: string, task: QuestStep): void;
   getAllTasks(questId: string): QuestStep[];
+  getTaskCompleted(taskId: string, userId?: string): boolean;
+  completeTask(taskId: string, userId: string): void;
 }
 
 class Datalayer implements DL {
@@ -37,7 +39,7 @@ class Datalayer implements DL {
         id TEXT PRIMARY KEY,
         displayName TEXT NOT NULL,
         description TEXT NOT NULL
-      )
+      ) STRICT
     `);
 
     db.exec(`
@@ -45,11 +47,21 @@ class Datalayer implements DL {
         id TEXT PRIMARY KEY,
         questId TEXT NOT NULL,
         displayName TEXT NOT NULL,
-        required TEXT NOT NULL, 
-        completed INTEGER NOT NULL CHECK (completed IN (0, 1)),
+        required TEXT NOT NULL,
         FOREIGN KEY (questId) REFERENCES quest(id) ON DELETE CASCADE
-      ) STRICT;
+      ) STRICT
     `);
+
+    db.exec(`
+      CREATE TABLE completionlog (
+        taskId TEXT,
+        userId TEXT,
+        FOREIGN KEY (taskId) REFERENCES task(id) ON DELETE CASCADE,
+        FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE
+      ) STRICT
+    `);
+
+    db.exec(`CREATE UNIQUE INDEX idx_completionlog_user_task ON completionlog (userId, taskId)`);
 
     // Seed db
     for (const quest of quests) {
@@ -66,15 +78,15 @@ class Datalayer implements DL {
     this.store.run`INSERT INTO user VALUES (${user.id}, ${user.name})`
   }
 
-  getAllQuests(): Quest[] {
+  getAllQuests(userId?: string): Quest[] {
     const quests = this.store.all`SELECT * FROM quest` as any as Omit<Quest, "tasks">[];
     return quests.map(quest => ({
       ...quest,
-      tasks: this.getAllTasks(quest.id),
+      tasks: this.getAllTasks(quest.id, userId),
     }))
   }
 
-  getQuestById(id: string): Quest | undefined {
+  getQuestById(id: string, userId?: string): Quest | undefined {
     const quest = this.store.get`SELECT * FROM quest WHERE id = ${id}` as Quest | undefined;
 
     if (!quest) {
@@ -83,7 +95,7 @@ class Datalayer implements DL {
 
     return {
       ...quest,
-      tasks: this.getAllTasks(id)
+      tasks: this.getAllTasks(id, userId)
     };
   }
 
@@ -97,25 +109,36 @@ class Datalayer implements DL {
 
   createTask(questId: string, task: QuestStep): void {
     const required = JSON.stringify(task.required);
-    const completed = task.completed ? 1 : 0;
-    this.store.run`INSERT INTO task (id, questId, displayName, required, completed) VALUES (${task.id}, ${questId}, ${task.displayName}, ${required}, ${completed})`;
+    this.store.run`INSERT INTO task (id, questId, displayName, required) VALUES (${task.id}, ${questId}, ${task.displayName}, ${required})`;
   }
 
-  getAllTasks(questId: string): QuestStep[] {
+  getAllTasks(questId: string, userId?: string): QuestStep[] {
     const rawTasks = this.store.all`SELECT * FROM task WHERE questId = ${questId}` as Array<{
       id: string;
       questId: string;
       displayName: string;
       required: string;
-      completed: number;
     }>;
 
     return rawTasks.map(task => ({
       id: task.id,
       displayName: task.displayName,
       required: JSON.parse(task.required),
-      completed: task.completed === 1
+      completed: this.getTaskCompleted(task.id, userId)
     }));
+  }
+
+  getTaskCompleted(taskId: string, userId?: string): boolean {
+    if (!userId) {
+      return false;
+    }
+
+    const result = this.store.get`SELECT * FROM completionlog WHERE taskId = ${taskId} and userId = ${userId}`;
+    return typeof result === "number" && result === 1;
+  }
+
+  completeTask(taskId: string, userId: string): void {
+    this.store.run`INSERT OR IGNORE INTO completionlog (taskId, userId) VALUES (${taskId}, ${userId})`;
   }
 }
 
