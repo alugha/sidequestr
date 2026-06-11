@@ -1,6 +1,6 @@
 import fastifySession from '@fastify/session'
 import fp from 'fastify-plugin'
-import type { Auth } from '../../schemas/auth.ts'
+import type { Auth } from '../../../shared/schemas/auth.ts'
 import fastifyCookie from '@fastify/cookie'
 
 declare module 'fastify' {
