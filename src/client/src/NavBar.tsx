@@ -2,7 +2,7 @@ import type React from "react";
 import {BottomNavigation, type BottomNavigationSelectEvent} from '@progress/kendo-react-layout'
 import { cameraIcon, homeIcon } from '@progress/kendo-svg-icons';
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 interface Props {
     children: React.ReactNode;
