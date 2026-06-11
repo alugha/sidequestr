@@ -5,7 +5,7 @@ import fastifyCookie from '@fastify/cookie'
 
 declare module 'fastify' {
   interface Session {
-    user: Auth
+    user?: Auth
   }
 }
 
