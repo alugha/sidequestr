@@ -11,25 +11,10 @@ import TreeView, { type QuestList } from "./QuestList";
 const userName = "Alugha";
 const userDescription = "I'm a company";
 
-const eventName = "HAcHackathonParty";
+const eventName = "HackathonParty";
 const eventDescription =
   "Design and build a product that improves how events are created or experienced, from discovering better content and participants, to enabling more meaningful interactions at scale. Focus on solving a specific, real problem and show clear value to organisers or attendees. Use Kendo UI to bring your idea to life through a polished, interactive experience.";
 
-
-const questsData: QuestList[] = [
-  {
-    text: "Open",
-    quests: [],
-  },
-  {
-    text: "Running",
-    quests: [],
-  },
-  {
-    text: "Completed",
-    quests: [],
-  },
-];
 
 function Dashboard(): ReactElement {
   const [data, setData] = React.useState<QuestList[]>([]);
@@ -37,9 +22,20 @@ function Dashboard(): ReactElement {
 
   React.useEffect(() => {
     fetch('/api/quests').then(body => body.json()).then(obj => {
-      questsData[0].quests.length = 0
-      questsData[1].quests.length = 0
-      questsData[2].quests.length = 0
+      const questsData: QuestList[] = [
+        {
+          text: "Open",
+          quests: [],
+        },
+        {
+          text: "Running",
+          quests: [],
+        },
+        {
+          text: "Completed",
+          quests: [],
+        },
+      ];
       obj.forEach((quest: any) => {
         const totalTasks = quest.tasks.length;
         let completedTasks = 0;
