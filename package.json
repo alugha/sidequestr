@@ -82,6 +82,7 @@
     "@progress/kendo-theme-fluent": "^14.0.0",
     "@progress/kendo-theme-material": "^14.0.0",
     "@progress/kendo-theme-utils": "^14.1.0",
+    "@yudiel/react-qr-scanner": "^2.6.0",
     "close-with-grace": "^2.5.0",
     "fastify": "^5.8.5",
     "fastify-plugin": "^6.0.0",
