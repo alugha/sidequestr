@@ -13,10 +13,10 @@ export default async function serviceApp(
   })
 
   // Load app plugins
-  // await fastify.register(fastifyAutoload, {
-  //   dir: path.join(import.meta.dirname, 'plugins/app'),
-  //   options: { ...opts }
-  // })
+  await fastify.register(fastifyAutoload, {
+    dir: path.join(import.meta.dirname, 'plugins/app'),
+    options: { ...opts }
+  })
 
   // This loads all plugins defined in routes
   await fastify.register(fastifyAutoload, {

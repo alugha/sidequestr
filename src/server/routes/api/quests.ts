@@ -3,8 +3,7 @@ import {
   Type
 } from '@fastify/type-provider-typebox'
 
-import { QuestSchema } from '../../schemas/quest';
-import { quests } from '../../staticdata'
+import { QuestSchema } from '../../../shared/schemas/quest';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.get(
@@ -19,22 +18,18 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         },
       }
     },
-    async function (request, reply) {
-//      if (!request.session.user) {
-//       reply.status(400);
-//        return { error: "need to be logged in" }
-//      }
+    async function () {
+      //      if (!request.session.user) {
+      //       reply.status(400);
+      //        return { error: "need to be logged in" }
+      //      }
 
-      return quests.map(quest => {
-        return {
-            ...quest,
-            tasks: quest.tasks.map(t => {
-            return {
-                ...t,
-                required: t.required ?? [],
-                completed: t.completed === undefined ? false : t.completed //FIXME: this is here for testing only!
-            }})
-        }})
+      const quests = this.dl.getAllQuests().map(quest => ({
+        ...quest,
+        tasks: this.dl.getAllTasks(quest.id),
+      }))
+
+      return quests;
     }
   )
 }
