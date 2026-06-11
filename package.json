@@ -18,10 +18,11 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev:server": "",
+    "dev:server": "tsx --watch ./src/server/main.ts",
     "dev:client": "vite src/client/",
     "build:client": "tsc -b && vite build src/client/",
-    "lint:client": "eslint /src/client"
+    "lint:client": "eslint /src/client",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@fastify/autoload": "^6.3.1",
@@ -101,6 +102,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "tsx": "^4.22.4"
   }
 }

@@ -4,6 +4,7 @@ import {
   Type
 } from '@fastify/type-provider-typebox'
 import { LoginSchema } from '../../schemas/auth.ts'
+import { UserSchema } from '../../schemas/user.ts'
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.post(
@@ -12,30 +13,26 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       schema: {
         body: LoginSchema,
         response: {
-          200: Type.Object({
-            message: Type.Optional(Type.String())
-          }),
+          200: UserSchema,
           400: Type.Object({
-            message: Type.String()
+            error: Type.String()
           })
         },
-        tags: ['Authentication']
       }
     },
     async function (request, reply) {
       if (request.session.user) {
         reply.status(400);
-        return { message: "already logged in" }
+        return { error: "already logged in" }
       }
 
       const { name } = request.body
 
       request.session.user = { id: randomUUID(), name };
-
-      // TODO: persist into DB
+      await request.session.save();
 
       return {
-        message: "success",
+        name
       }
     }
   )
