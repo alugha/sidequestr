@@ -10,7 +10,7 @@ import { FieldWrapper } from '@progress/kendo-react-form';
 import { Label } from '@progress/kendo-react-labels';
 import { Input } from '@progress/kendo-react-inputs';
 
-function LoginPage({ onLoginSuccess }: { onLoginSuccess(): void }): ReactElement {
+function LoginPage({ onLoginSuccess }: { onLoginSuccess(user:User): void }): ReactElement {
   const [name, setName] = useState("");
   const [touched, setTouched] = useState(false);
 
@@ -24,7 +24,7 @@ function LoginPage({ onLoginSuccess }: { onLoginSuccess(): void }): ReactElement
         // TODO: handle API error, e.g. show error notification (do we have a Kendo Toast thingy?)
         console.error("could not log in")
       } else {
-        onLoginSuccess();
+        onLoginSuccess(result);
       }
     } catch (err) {
       // TODO: handle network errors

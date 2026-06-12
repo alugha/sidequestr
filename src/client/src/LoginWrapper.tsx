@@ -8,6 +8,7 @@ export const SessionContext = createContext<User|null>(null);
 
 function LoginWrapper({ children }: { children: React.ReactNode }): ReactElement {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user,setUser] = useState<User|null>(null);
 
   // TODO: handle errors
   const { data, loading } = useFetch<User>("/api/auth")
@@ -27,11 +28,11 @@ function LoginWrapper({ children }: { children: React.ReactNode }): ReactElement
   }
 
   if (!loggedIn) {
-    return <LoginPage onLoginSuccess={() => setLoggedIn(true)} />
+    return <LoginPage onLoginSuccess={(user) => {setLoggedIn(true);setUser(user)}} />
   }
 
   return (
-    <SessionContext value={data}>
+    <SessionContext value={data??user}>
       {children}
     </SessionContext>
   );

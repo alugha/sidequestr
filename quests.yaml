@@ -1,32 +1,41 @@
 quests:
   - id: quest1
-    displayName: My First Quest
-    description: Your first ever quest using Sidequestr!
+    displayName: First steps around
+    description: You just entered the realm of hacks. I bid you welcome, weary traveler. Before you get too comfortable, let's make sure that you know your way around the lands. Trust me, it will be worth it in the end. Let's begin with getting familiar with the tokens of power. There is one right next to the front gates. Use your magical handheld and see if you can activate the token
     tasks:
       - id: quest1task1
-        displayName: Scan your first QR code
+        displayName: Find your first token of power
         required: []
   - id: quest2
-    displayName: My Second Quest
-    description: Your second ever quest using Sidequestr!
+    displayName: Get yourself a drink
+    description: The tavern is not far and the day will be long. Be sure to get a drink there once in a while
     tasks:
       - id: quest2task1
-        displayName: Scan QR code 1
+        displayName: Find the tavern
         required: []
       - id: quest2task2
-        displayName: Scan QR code 2
+        displayName: Get a drink
         required: []
   - id: quest3
-    displayName: My Third Quest
-    description: Your third ever quest using Sidequestr!
+    displayName: Construct the ancient sword to slay the dragon
+    description: Before this day is out, you will encounter a mighty beast form ancient times. That is something you don't want to do unprepared. Quick, gather materials and find a blacksmith that will craft your weapon.
     tasks:
       - id: quest3task1
-        displayName: Scan your third QR code
+        displayName: Find some ore
         required: []
+      - id: quest3task2
+        displayName: Find some wood
+        required: []
+      - id: quest3task3
+        displayName: Find the essence of fairies
+        required: []
+      - id: quest3task4
+        displayName: Find the blacksmith
+        required: [quest3task1,quest3task2,quest3task3]
   - id: quest4
-    displayName: My Fourth Quest
-    description: Your fourth ever quest using Sidequestr!
+    displayName: Slay that dragon
+    description: Now that you have your sword, give that dragon a decent beatup.
     tasks:
       - id: quest4task1
-        displayName: Scan your fourth QR code
+        displayName: Knock out the dragon and obtain its egg
         required: []
