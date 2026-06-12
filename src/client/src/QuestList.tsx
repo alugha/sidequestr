@@ -18,8 +18,8 @@ interface Props {
 const QuestList: React.FC<Props> = ({items}) => {
 
     return <>
-        {items.map(l=>
-        <details name="quests" id="questlist">
+        {items.map((l,idx)=>
+        <details key={`q-${idx}`} name="quests" id="questlist">
             <summary>
                 {l.text}
             </summary>

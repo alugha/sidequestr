@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from 'react';
+import React, { useState, type ReactElement } from 'react';
 import './App.css';
 import type { Login } from '../../shared/schemas/auth';
 import { useFetchCallable } from './hooks/useFetchCallable';
@@ -25,11 +25,16 @@ function LoginPage({ onLoginSuccess }: { onLoginSuccess(): void }): ReactElement
     }
   }
 
+  const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    void handleLogin();
+  }
+
   return (
-    <div>
-      Name: <input value={name} onChange={e => setName(e.currentTarget.value)}></input>
-      <button onClick={handleLogin} disabled={loading}>{loading ? "Logging in ..." : "Login"}</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      Name: <input value={name} onChange={e => setName(e.currentTarget.value)} required></input>
+      <button type="submit" disabled={loading}>{loading ? "Logging in …" : "Login"}</button>
+    </form>
   );
 }
 
