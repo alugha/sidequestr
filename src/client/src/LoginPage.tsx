@@ -4,8 +4,15 @@ import type { Login } from '../../shared/schemas/auth';
 import { useFetchCallable } from './hooks/useFetchCallable';
 import type { User } from '../../shared/schemas/user';
 
+import { StackLayout } from '@progress/kendo-react-layout';
+import { Button } from '@progress/kendo-react-buttons';
+import { FieldWrapper } from '@progress/kendo-react-form';
+import { Label } from '@progress/kendo-react-labels';
+import { Input } from '@progress/kendo-react-inputs';
+
 function LoginPage({ onLoginSuccess }: { onLoginSuccess(): void }): ReactElement {
   const [name, setName] = useState("");
+  const [touched, setTouched] = useState(false);
 
   const { loading, call: login } = useFetchCallable<User>("/api/login", { method: "POST", headers: { "Content-Type": "application/json" } });
 
@@ -30,11 +37,37 @@ function LoginPage({ onLoginSuccess }: { onLoginSuccess(): void }): ReactElement
     void handleLogin();
   }
 
+  const inputValid = !touched || !!name
+
   return (
     <form onSubmit={handleSubmit}>
-      Name: <input value={name} onChange={e => setName(e.currentTarget.value)} required></input>
-      <button type="submit" disabled={loading}>{loading ? "Logging in …" : "Login"}</button>
-    </form>
+      <StackLayout orientation='vertical' style={{ margin: "1rem" }}>
+        <h1>Sidequestr</h1>
+        <p>Welcome, traveler! I am glad you have found your way here. The kingdom is in dire need, and His Majesty the King has sent me in search of brave adventurers — and you look like just the kind of hero we need. Great honor awaits those who succeed, and epic rewards along with it.</p>
+        <p>But first, tell me... what is your name?</p>
+        <StackLayout orientation='vertical' gap="1rem">
+          <FieldWrapper>
+
+            <Label editorId={"name"} editorValid={inputValid} editorDisabled={loading}>
+              Character Name
+            </Label>
+            <Input
+              value={name}
+              valid={inputValid}
+              type="text"
+              id="name"
+              disabled={loading}
+              maxLength={255}
+              onChange={e => {
+                setName(e.value)
+                setTouched(true)
+              }}
+            />
+          </FieldWrapper>
+          <Button type="submit" disabled={loading || !name}>{loading ? "Loading…" : "Start"}</Button>
+        </StackLayout>
+      </StackLayout>
+    </form >
   );
 }
 

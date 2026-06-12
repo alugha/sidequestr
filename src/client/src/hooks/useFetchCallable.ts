@@ -48,12 +48,12 @@ export function useFetchCallable<T = unknown>(url: string, options: RequestInit 
       setData(parsed);
       return parsed;
     } catch (err) {
-      if (!signal.current) {
+      if (!signal.current?.aborted) {
         setError(err instanceof Error ? err : new Error(String(err)));
       }
       return null;
     } finally {
-      if (!signal.current) {
+      if (!signal.current?.aborted) {
         setLoading(false);
       }
     }
