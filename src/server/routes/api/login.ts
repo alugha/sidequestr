@@ -31,6 +31,8 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       request.session.user = { id, name };
       await request.session.save();
 
+      this.dl.createUser({ id, name });
+
       return reply.status(200).send({ id, name });
     },
   );

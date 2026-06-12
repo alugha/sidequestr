@@ -65,17 +65,17 @@ class Datalayer implements DL {
 
     // Seed db
     for (const quest of quests) {
-      this.createQuest(quest)
+      this.createQuest(quest);
     }
 
   }
 
   getUserById(id: string) {
-    return this.store.get`SELECT * FROM user WHERE id = ${id}` as User | undefined
+    return this.store.get`SELECT * FROM user WHERE id = ${id}` as User | undefined;
   }
 
   createUser(user: User) {
-    this.store.run`INSERT INTO user VALUES (${user.id}, ${user.name})`
+    this.store.run`INSERT INTO user (id, name) VALUES (${user.id}, ${user.name})`;
   }
 
   getAllQuests(userId?: string): Quest[] {
@@ -83,7 +83,7 @@ class Datalayer implements DL {
     return quests.map(quest => ({
       ...quest,
       tasks: this.getAllTasks(quest.id, userId),
-    }))
+    }));
   }
 
   getQuestById(id: string, userId?: string): Quest | undefined {
