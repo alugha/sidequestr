@@ -132,9 +132,12 @@ class Datalayer implements DL {
     if (!userId) {
       return false;
     }
+    console.log(`SELECT * FROM completionlog WHERE taskId = ${taskId} and userId = ${userId}`)
+    console.log(this.store.get`SELECT * FROM completionlog`)
 
-    const result = this.store.get`SELECT * FROM completionlog WHERE taskId = ${taskId} and userId = ${userId}`;
-    return typeof result === "number" && result === 1;
+    const result = this.store.get`SELECT COUNT(*) AS count FROM completionlog WHERE taskId = ${taskId} and userId = ${userId}`;
+    console.log(result);
+    return typeof result?.count === "number" && result.count === 1;
   }
 
   completeTask(taskId: string, userId: string): void {
