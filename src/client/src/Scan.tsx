@@ -45,10 +45,14 @@ const Scan: React.FC = () => {
         <>
           <div style={{ width: "15rem", margin: "0 auto", maxWidth: "calc(100vw - 1rem)" }}>
             <Scanner
-              constraints={{
-
+              onScan={(result) => {
+                try {
+                  const taskId = JSON.parse(result[0].rawValue).id;
+                  completeTask(taskId);
+                } catch (err) {
+                  console.error(err);
+                }
               }}
-              onScan={(result) => completeTask(result[0].rawValue)}
               onError={(error) => console.log(error?.message)}
             />
 
