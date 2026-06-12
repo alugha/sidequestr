@@ -19,9 +19,14 @@ const Scan:React.FC = ()=>{
     <div style={{margin:"1rem"}}>
     <h2>Scan a code and keep questing</h2>
 
-    {success === true && <h2>That worked!</h2>}
-    {success === false && <h2>Something is wrong with your scan</h2>}
-    {success !== null ? <Button onClick={()=>setSuccess(null)}>Scan another code</Button> : 
+    {success === true && <>
+      <h2>Hussah!</h2>
+      <p>You successfully claimed your magical object and made progress. Congratulations. But your journey is not over yet. More stuff to find out there, keep your eyes open!</p>
+      </>
+    }
+    {success === false && <><h2>Huh?!</h2>
+    <p>It appears that whatever your experiment is about, it is not working. Maybe you are holding it wrong. Stay focused.</p></>}
+    {success !== null ? <Button onClick={()=>setSuccess(null)}>Make another claim</Button> : 
       <>
         <div style={{width:"15rem", margin:"0 auto", maxWidth:"calc(100vw - 1rem)"}}>  
           <Scanner 
@@ -33,8 +38,8 @@ const Scan:React.FC = ()=>{
           </div>
           <h3>No camera available?</h3>
           <form onSubmit={(e)=>{e.preventDefault();completeTask(taskId)}}>
-            <label  >Code<Input type="text" onChange={e=>setTaskId(e.target.value as string)} /></label> 
-            <Button type="submit">Complete a task</Button>
+            <label  >Code<Input type="text" onChange={e=>setTaskId(e.target.value as string)} required/></label> 
+            <Button type="submit" style={{width:'100%'}}>Complete a task</Button>
           </form>   
         </>}
     

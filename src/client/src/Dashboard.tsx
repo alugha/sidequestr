@@ -1,5 +1,4 @@
-import * as React from "react";
-import type { ReactElement } from "react";
+import React, {useContext, useState, useEffect}  from "react";
 import "./App.css";
 
 import { Avatar } from "@progress/kendo-react-layout";
@@ -7,24 +6,23 @@ import { userIcon } from "@progress/kendo-svg-icons";
 import { SvgIcon } from "@progress/kendo-react-common";
 import { GridLayout, GridLayoutItem } from "@progress/kendo-react-layout";
 import TreeView, { type QuestList } from "./QuestList";
-
-const userName = "Alugha";
-const userDescription = "I'm a company";
+import { SessionContext } from "./LoginWrapper";
 
 const eventName = "HackathonParty";
-const eventDescription =
-  "Design and build a product that improves how events are created or experienced, from discovering better content and participants, to enabling more meaningful interactions at scale. Focus on solving a specific, real problem and show clear value to organisers or attendees. Use Kendo UI to bring your idea to life through a polished, interactive experience.";
+const eventDescription = "Your magical handheld device is exactly what you need to gather more might. You will do so by holding over one of the many tokens of power that have been hidden accross this noble establishment. Every action you take increases your connection with the area and opens up more opportunities. Have a look around and see for yourself!"
 
+const Dashboard:React.FC =()=> {
+  const [data, setData] = useState<QuestList[]>([]);
+  const user = useContext(SessionContext);
 
-function Dashboard(): ReactElement {
-  const [data, setData] = React.useState<QuestList[]>([]);
-
-
-  React.useEffect(() => {
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
     fetch('/api/quests').then(body => body.json()).then(obj => {
       const questsData: QuestList[] = [
         {
-          text: "Open",
+          text: "Available",
           quests: [],
         },
         {
@@ -57,6 +55,11 @@ function Dashboard(): ReactElement {
     })
   }, [])
 
+  if (!user) {
+    console.log('No user present. This should have been caught by the LoginWrapper')
+    return;
+  }
+
   return (
     <div style={{ margin: "1rem" }}>
       <div>
@@ -65,27 +68,32 @@ function Dashboard(): ReactElement {
             <div className="content">
               <GridLayout rows={[{}, {}]} gap={{ rows: 1, cols: 1 }}>
                 <GridLayoutItem
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
                   col={1}
                   row={1}
+                  rowSpan={2}
                 >
-                  <Avatar type="icon" size="large" rounded="none">
+                  <Avatar type="icon" size="large" rounded="none" themeColor="secondary">
                     <SvgIcon icon={userIcon} />
                   </Avatar>
                 </GridLayoutItem>
                 <GridLayoutItem
-                  style={{}}
                   className="box"
                   col={2}
                   colSpan={4}
                   row={1}
+                  rowSpan={1}
                 >
-                  <h1>{userName}</h1>
-                  <p> {userDescription}</p>
+                  <h2 style={{margin:0}}>{user.name}</h2>
+                </GridLayoutItem>
+                <GridLayoutItem
+                  className="box"
+                  col={2}
+                  colSpan={4}
+                  row={2}
+                  rowSpan={1}
+                  style={{alignSelf:"flex-end"}}
+                >
+                  <em>Ready for an adventure!</em>
                 </GridLayoutItem>
               </GridLayout>
             </div>

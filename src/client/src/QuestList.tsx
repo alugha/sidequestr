@@ -35,7 +35,7 @@ const QuestList: React.FC<Props> = ({items}) => {
         <style>
             {`
             #questlist {
-                border-bottom: 1px solid var(--kendo-color-subtle);
+                border-bottom: 1px solid var(--sq-color-light-border);
                 box-shadow: 0px 1px white;
             }
 

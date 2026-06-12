@@ -19,7 +19,7 @@ function SingleQuestPage(): ReactElement {
 
   return (
     <div style={{ margin: "1rem" }}>
-      <img src={sampleImage} alt="QuestImage" style={{maxHeight: 200}} />
+      <img src={sampleImage} alt="QuestImage" style={{maxHeight: 200, margin:'0 auto', display:'block'}} />
       <div>
         <div className="example-wrapper">
           <div className="page">

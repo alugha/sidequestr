@@ -3,8 +3,10 @@
 
 :root {
   --kendo-color-primary: oklch(62.79% 0.2171 261.72deg);
-  --kendo-color-secondary: oklch(0.3717 0.1258 6.14);
+  --kendo-color-secondary: oklch(37.09% 0.12602 5.709);
   --kendo-color-tertiary: oklch(68.14% 0.1824 145.32deg);
+  --sq-color-light-border: oklch(90.296% 0.0152 356.27);
+  --kendo-color-app-surface: oklch(95.456% 0.00752 16.496);
 }
 
 html,
@@ -256,6 +258,14 @@ div.app-header.k-appbar.app-header {
   outline: 2px solid #415bd3;
   outline-offset: 2px;
   box-shadow: none;
+}
+
+hr {
+  border-bottom: 1px solid var(--sq-color-light-border);
+  box-shadow: 0px 1px white;
+  position: relative;
+  left: -20px;
+  width: 100vw;
 }
 
 @media (max-width: 800px) {

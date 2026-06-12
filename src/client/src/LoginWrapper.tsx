@@ -1,8 +1,10 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { createContext, useEffect, useState, type ReactElement } from 'react';
 import './App.css';
 import { useFetch } from './hooks/useFetch';
 import type { User } from '../../shared/schemas/user';
 import LoginPage from './LoginPage';
+
+export const SessionContext = createContext<User|null>(null);
 
 function LoginWrapper({ children }: { children: React.ReactNode }): ReactElement {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,9 +31,9 @@ function LoginWrapper({ children }: { children: React.ReactNode }): ReactElement
   }
 
   return (
-    <>
+    <SessionContext value={data}>
       {children}
-    </>
+    </SessionContext>
   );
 }
 
