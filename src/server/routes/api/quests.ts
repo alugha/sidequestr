@@ -3,7 +3,7 @@ import {
   Type
 } from '@fastify/type-provider-typebox'
 
-import { QuestSchema } from '../../../shared/schemas/quest';
+import { QuestSchema } from '../../../shared/schemas/quest.ts';
 
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.get(

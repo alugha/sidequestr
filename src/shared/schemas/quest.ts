@@ -1,5 +1,5 @@
 import { type Static, String, Type } from 'typebox'
-import { IdSchema } from './common'
+import { IdSchema } from './common.ts'
 
 export const QuestStepSchema = Type.Object({
     id: String({ minLength: 3, maxLength: 32 }),

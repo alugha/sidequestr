@@ -34,7 +34,8 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
         data: JSON.stringify({ id: task.id, displayName: task.displayName }),
       });
 
-      const payload = await qr.serialize();
+
+      const payload = await (qr as any).serialize(); // This has problems with nodenext module resolution - TS thinks that there is no serialize method.
       return payload != null
         ? reply.code(200).header("content-type", "image/svg").send(payload)
         : reply.code(500).send("failed to serialize as SVG");
