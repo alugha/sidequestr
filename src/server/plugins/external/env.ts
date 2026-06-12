@@ -9,6 +9,7 @@ declare module 'fastify' {
       COOKIE_SECURED: boolean;
       RATE_LIMIT_MAX: number;
       SQLITE_PATH: string;
+      CLIENT_DIRNAME: string;
     };
   }
 }
@@ -43,6 +44,10 @@ const schema = {
     },
     SQLITE_PATH: {
       type: 'string',
+    },
+    CLIENT_DIRNAME: {
+      type: 'string',
+      default: './src/client/dist'
     }
   }
 }
