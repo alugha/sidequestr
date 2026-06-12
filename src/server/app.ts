@@ -59,6 +59,9 @@ export default async function serviceApp(
       })
     },
     (request, reply) => {
+      if (request.url === "/scan" || request.url.startsWith("/quest/")) {
+        return reply.sendFile("index.html");
+      }
       request.log.warn(
         {
           request: {
